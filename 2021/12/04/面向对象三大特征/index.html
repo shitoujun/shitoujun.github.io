@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="三大特征1、封装2、继承3、多态 一、封装用于隐藏对象内部的属性与实现细节，控制外部访问对象数据权限，同时将抽象得到的数据与行为整合成一个整体。其在C++中的体现就是“类”，“类”中包含数据与行为，其中的“public”、”private”、“protected”定义了外部访问的权限。我们常说C语言是不安全的，其重要的一个表现就是：数据没有所有权的概念也无法将数据隐藏，即：只要是变量的作用域内任何">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++学习笔记-面向对象三大特征">
+<meta property="og:url" content="http://example.com/2021/12/04/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%89%E5%A4%A7%E7%89%B9%E5%BE%81/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="三大特征1、封装2、继承3、多态 一、封装用于隐藏对象内部的属性与实现细节，控制外部访问对象数据权限，同时将抽象得到的数据与行为整合成一个整体。其在C++中的体现就是“类”，“类”中包含数据与行为，其中的“public”、”private”、“protected”定义了外部访问的权限。我们常说C语言是不安全的，其重要的一个表现就是：数据没有所有权的概念也无法将数据隐藏，即：只要是变量的作用域内任何">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-04T13:16:05.000Z">
+<meta property="article:modified_time" content="2021-12-05T08:08:51.248Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/12/04/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%89%E5%A4%A7%E7%89%B9%E5%BE%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>C++学习笔记-面向对象三大特征 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-主页">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a>
+
+  </li>
+        <li class="menu-item menu-item-归档">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%89%E5%A4%A7%E7%89%B9%E5%BE%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++学习笔记-面向对象三大特征
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-04 21:16:05" itemprop="dateCreated datePublished" datetime="2021-12-04T21:16:05+08:00">2021-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-12-05 16:08:51" itemprop="dateModified" datetime="2021-12-05T16:08:51+08:00">2021-12-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="三大特征"><a href="#三大特征" class="headerlink" title="三大特征"></a>三大特征</h2><p>1、封装<br>2、继承<br>3、多态</p>
+<h3 id="一、封装"><a href="#一、封装" class="headerlink" title="一、封装"></a>一、封装</h3><p>用于隐藏对象内部的属性与实现细节，控制外部访问对象数据权限，同时将抽象得到的数据与行为整合成一个整体。其在C++中的体现就是“类”，“类”中包含数据与行为，其中的“public”、”private”、“protected”定义了外部访问的权限。<br>我们常说C语言是不安全的，其重要的一个表现就是：数据没有所有权的概念也无法将数据隐藏，即：只要是变量的作用域内任何人都可以的其进行操作（除了const变量）。（<strong>越是自由的语言越需要对人进行约束！！！！</strong>）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*示例*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">boo</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">boo</span>(<span class="keyword">int</span> a_init, <span class="keyword">int</span> b_init, <span class="keyword">int</span> c_init)&#123;</span><br><span class="line">        a = a_init;</span><br><span class="line">        b = b_init;</span><br><span class="line">        c = c_init;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Func_Printf</span><span class="params">()</span></span>&#123;</span><br><span class="line">        cout &lt;&lt; a &lt;&lt; endl;</span><br><span class="line">        cout &lt;&lt; b &lt;&lt; endl;</span><br><span class="line">        cout &lt;&lt; c &lt;&lt; endl;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> b;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">boo <span class="title">A</span><span class="params">(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span></span>;</span><br><span class="line">    A.a = <span class="number">0</span>;            <span class="comment">//正确</span></span><br><span class="line">    A.b = <span class="number">0</span>;            <span class="comment">//错误</span></span><br><span class="line">    A.c = <span class="number">0</span>;            <span class="comment">//错误</span></span><br><span class="line">    A.<span class="built_in">Func_Printf</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面示例将“b”、“c”保护起来了，我们不能通过A.*的操作进行修改。其中“a”、“b”、“c”就是对象的数据，而Func_Printf()就是其行为。<br><strong>备注：1、“public”成员可以被用户程序访问（类外代码）；2、“private”成员只能被类内代码与友元访问，不可以被用户程序（类外代码）访问；3、“protected”成员只能被类内代码以及派生类对象访问，同样不能被用户程序（类外代码）访问。</strong><br><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/219.html"><font color=#005555>详解外部链接1</font></a><br><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/252.html"><font color=#005555>详解外部链接2</font></a></p>
+<h3 id="二、继承"><a href="#二、继承" class="headerlink" title="二、继承"></a>二、继承</h3><p><a target="_blank" rel="noopener" href="https://study.163.com/course/courseLearn.htm?courseId=271005&from=study#/learn/video?lessonId=393019&courseId=271005"><font color=#005555><strong>优质视频教程传送门</strong></font></a><br>继承：从直观意思来讲就是子辈去获取父辈的东西。<br>在面向对象编程中：比如我们已经有了一个“狗”的类，我们现在想新建一个“哈士奇”的类，我们想让 “哈士奇”类 中包含 “狗”类 中定义的属性（成员）但我们又不想去重复编写代码，那么我们就可以通过“继承”操作让“哈士奇”类中包含“狗”类的所有属性（成员）。这其中“狗”类就是 <font color=#FF0000><strong>基类</strong></font> ，而“哈士奇”类就是 <font color=#FF0000><strong>派生类</strong></font> 。派生类（哈士奇）中包含基类（狗）的全部的属性（成员）。<br>个人的总结是<strong>青出于蓝而胜于蓝</strong>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*示例*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Dog</span>()&#123;&#125;;</span><br><span class="line">    ~<span class="built_in">Dog</span>()&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Dog_Printf</span><span class="params">()</span></span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;这是只狗。&quot;</span>&lt;&lt; endl;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> Leg_Num = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">int</span> Tail_Num = <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SiberianHusky</span> :</span> <span class="keyword">public</span> Dog &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">SiberianHusky</span>()&#123;&#125;;</span><br><span class="line">    ~<span class="built_in">SiberianHusky</span>()&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">IQ_Printf</span><span class="params">()</span></span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;IQ = &quot;</span> &lt;&lt; IQ &lt;&lt; endl;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> IQ = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SiberianHusky XiaoMing;</span><br><span class="line">    XiaoMing.<span class="built_in">Dog_Printf</span>();</span><br><span class="line">    XiaoMing.<span class="built_in">IQ_Printf</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*输出*/</span></span><br><span class="line">这是只狗。</span><br><span class="line">IQ = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h3 id="三、多态"><a href="#三、多态" class="headerlink" title="三、多态"></a>三、多态</h3><h4 id="多态是什么："><a href="#多态是什么：" class="headerlink" title="多态是什么："></a>多态是什么：</h4><p>多态是一种编程方式、思想而非具体的技术。<br>多态最简单的讲就是：同一条函数调用语句能调用不同的函数。</p>
+<h4 id="多态与泛型"><a href="#多态与泛型" class="headerlink" title="多态与泛型:"></a>多态与泛型:</h4><p>泛型编程：<br>所谓的泛型编程就是以独立于任何特定类型的方式编写代码。使用泛型程序时，我们需要提供具体的程序实例所操作的类型或值。—-《C++ Primer 中文版》<br><strong>说人话</strong>：泛型函数只有在编译时才会将函数实例化，编译器在实例化时自行推断参数类型。</p>
+<p>多态：<br>At run time, objects of a derived class may be treated as objects of a base class in places such as method parameters and collections or arrays. When this polymorphism occurs, the object’s declared type is no longer identical to its run-time type.<br>在运行时，派生类的对象在方法参数和集合或数组等地方可能被视为基类的对象。 当这种多态发生时，对象的声明类型不再与其运行时类型相同。<br>Base classes may define and implement virtual methods, and derived classes can override them, which means they provide their own definition and implementation.<br>基类可以定义和实现虚拟方法，派生类可以覆盖它们，这意味着它们提供自己的定义和实现。<br>—–<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/polymorphism"><font color=#005555><strong>MSDN</strong></font></a><br><strong>说人话</strong>：派生类可以覆盖基类的方法。（通过虚函数）</p>
+<p>多态与泛型的基本思想非常接近。以至于有人提出“泛型是多态的特例”的说法，当然也有人反对这个说法。具体内容详见后续的泛型编程与虚函数章节。（也不知后面会不会有）<br>/<em>——————————————————结束符————————————————————————–</em>/</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/02/C-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AF%B9%E8%B1%A1/" rel="prev" title="C++学习笔记-对象">
+      <i class="fa fa-chevron-left"></i> C++学习笔记-对象
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/05/C-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BA%94%E5%A4%A7%E5%8E%9F%E5%88%99/" rel="next" title="C++学习笔记-面向对象五大原则">
+      C++学习笔记-面向对象五大原则 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E5%A4%A7%E7%89%B9%E5%BE%81"><span class="nav-number">1.</span> <span class="nav-text">三大特征</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%B0%81%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">一、封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%BB%A7%E6%89%BF"><span class="nav-number">1.2.</span> <span class="nav-text">二、继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%A4%9A%E6%80%81"><span class="nav-number">1.3.</span> <span class="nav-text">三、多态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E6%80%81%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9A"><span class="nav-number">1.3.1.</span> <span class="nav-text">多态是什么：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E6%80%81%E4%B8%8E%E6%B3%9B%E5%9E%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text">多态与泛型:</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
